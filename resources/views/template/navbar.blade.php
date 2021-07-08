@@ -1,7 +1,7 @@
-<nav class="bg-gray-700">
+<nav class="bg-indigo-700">
   <div class="flex flex-col lg:flex-row container mx-auto">
     <div class="flex items-center justify-between px-4 py-4 lg:py-0 border-b lg:border-b-0 border-gray-500">
-      <div><a href="#" class="uppercase font-semibold text-white">Brand</a></div>
+      <div><a href="{{ url('/') }}" class="uppercase font-semibold text-white">ShopAja</a></div>
       <div>
         <button class="focus:out-of-range: text-white block lg:hidden" onclick="toggleNavbar()">
             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -14,7 +14,7 @@
       <div class="flex flex-col lg:flex-row">
         @if (Route::has('login'))
           @auth
-          <a href="#" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Home</a>
+          <a href="{{ url('/') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Home</a>
           <a href="#" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Item</a>
           <a href="#" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Transaction</a>
           @endauth
@@ -32,7 +32,6 @@
               </form>
           @else
               <a href="{{ route('login') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Sign in</a>
-
               @if (Route::has('register'))
                   <a href="{{ route('register') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Sign up</a>
               @endif
