@@ -45,6 +45,7 @@
         </div>
 
         <button type="submit">Update Profile</button>
+        <a href="{{ url('/profile/password') }}">Update Password</a>
   </form>
 </div>
 @endsection
