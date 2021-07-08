@@ -8,6 +8,25 @@
   <title>@yield('title')</title>
 </head>
 <body>
+  @include('template.navbar')
   @yield('content')
 </body>
+
+    <script>
+      // Toggle Navbar
+      let isOpen = false;
+        function toggleNavbar() {
+          let navItem = document.getElementById("nav_item");
+          isOpen = !isOpen;
+          if(isOpen){
+            navItem.classList.add("block");
+            navItem.classList.remove("hidden");
+          }else{
+            navItem.classList.add("hidden");
+            navItem.classList.remove("block");
+          }
+        }
+      // End Toggle Navbar
+    </script>
+
 </html>
