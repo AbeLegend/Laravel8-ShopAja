@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Item Route
+Route::get('/', [ItemController::class, 'showAll'])->middleware(['auth', 'verified']);
+Route::get('/items', [ItemController::class, 'index'])->middleware(['auth']);
+Route::get('/items/create', [ItemController::class, 'create'])->middleware('auth');
+Route::post('/items', [ItemController::class, 'store'])->middleware('auth');
 // User Authentication
-Route::view('/', 'home')->middleware(['auth', 'verified']);
 Route::view('/profile/edit', 'profile.edit')->middleware(['auth', 'verified']);
 Route::view('/profile/password', 'profile.password')->middleware(['auth']);
