@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::view('/', 'home')->middleware('auth');
+Route::view('/profile/edit', 'profile.edit')->middleware('auth');

@@ -25,7 +25,7 @@
       <div class="flex flex-col lg:flex-row">
         @if (Route::has('login'))
           @auth
-              <a href="{{ url('/') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Profile</a>
+              <a href="{{ url('profile/edit') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Profile</a>
               <a href="{{ route('logout') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                   @csrf
