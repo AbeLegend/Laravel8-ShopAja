@@ -18,8 +18,15 @@
               <p class="text-sm">{{ $item->item_description }}</p>
               <p class="text-sm">Stock: {{ $item->item_stock }}</p>
               <div class="flex justify-between items-center">
-                <h2 class="text-red-500 font-bold">{{ $item->price }}</h2>
-                <a href="{{ url('/items/' . $item->id).'/edit' }}" class="bg-indigo-600 px-3 py-2 rounded text-white font-medium hover:bg-indigo-700 transform hover:-translate-y-1 duration-300 ease-in-out">Edit</a>
+                <h2 class="text-red-500 font-bold">Rp {{ $item->price }},-</h2>
+                <div class="flex space-x-2">
+                  <form action="{{ url('items/'.$item->id) }}" method="POST">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="bg-red-600 px-3 py-2 rounded text-white font-medium hover:bg-red-700 transform hover:-translate-y-1 duration-300 ease-in-out">Delete</button>
+                  </form>
+                  <a href="{{ url('/items/' . $item->id).'/edit' }}" class="bg-indigo-600 px-3 py-2 rounded text-white font-medium hover:bg-indigo-700 transform hover:-translate-y-1 duration-300 ease-in-out">Edit</a>
+                </div>
               </div>
             </div>
           @endif

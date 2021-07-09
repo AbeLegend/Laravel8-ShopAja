@@ -21,6 +21,7 @@ Route::post('/items', [ItemController::class, 'store'])->middleware('auth');
 Route::get('/items/create', [ItemController::class, 'create'])->middleware('auth');
 Route::get('/items/{item}', [ItemController::class, 'show'])->middleware('auth');
 Route::put('/items/{item}', [ItemController::class, 'update'])->middleware('auth');
+Route::delete('/items/{item}', [ItemController::class, 'destroy'])->middleware('auth');
 Route::get('/items/{item}/edit', [ItemController::class, 'edit'])->middleware('auth');
 // User Authentication
 Route::view('/profile/edit', 'profile.edit')->middleware(['auth', 'verified']);

@@ -148,7 +148,6 @@ class ItemController extends Controller
                 'price' => $request->input('price')
             ]);
         }
-
         return redirect('items')->with('status', 'Success Edit Item');
     }
 
@@ -160,6 +159,11 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        // delete image
+        unlink(public_path('images/' . $item->item_image));
+        // delete data
+        Item::destroy($item->id);
+        // redirect
+        return redirect('/items')->with('status', 'Success Delete Item');
     }
 }
