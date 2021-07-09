@@ -15,12 +15,13 @@
     <p class="text-justify px-5 py-1 border-b-2 border-indigo-400">{{ $item->item_description }}</p>
     <p class="font-medium">Stock: {{ $item->item_stock }}</p>
     <p class="font-bold my-2">Price: Rp {{ $item->price }} /pcs</p>
-    <form action="" method="POST" class="flex flex-col">
+    <form action="{{ url('items/'. $item->id .'/checkout') }}" method="POST" class="flex flex-col">
+      @csrf
       <div class="flex items-center space-x-3">
         <label class="block font-semibold">Purchase amount:</label>
-        <input type="number" class="border h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 rounded-md text-black"/>
+        <input type="number" name="purchase_amount" class="border h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 rounded-md text-black" required/>
       </div>
-      <button class="my-5 bg-green-600 px-3 py-2 rounded  font-medium hover:bg-green-700 transform hover:-translate-y-1 duration-300 ease-in-out">Checkout</button>
+      <button type="submit" class="my-5 bg-green-600 px-3 py-2 rounded  font-medium hover:bg-green-700 transform hover:-translate-y-1 duration-300 ease-in-out">Checkout</button>
     </form>
   </div>
 </div>

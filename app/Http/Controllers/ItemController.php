@@ -21,8 +21,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return view('items.index', compact('items'));
+        //
     }
 
     /**
@@ -69,7 +68,7 @@ class ItemController extends Controller
         ]);
 
         // redirect
-        return redirect('/items')->with('status', 'Success Create New Item for Sell');
+        return redirect('user/' . $request->input('id_user') . '/my-item')->with('status', 'Success Create New Item for Sell');
     }
 
     /**
@@ -148,7 +147,7 @@ class ItemController extends Controller
                 'price' => $request->input('price')
             ]);
         }
-        return redirect('items')->with('status', 'Success Edit Item');
+        return redirect('user/' . $item->id_user . '/my-item')->with('status', 'Success Edit Item');
     }
 
     /**
@@ -164,6 +163,17 @@ class ItemController extends Controller
         // delete data
         Item::destroy($item->id);
         // redirect
-        return redirect('/items')->with('status', 'Success Delete Item');
+        return redirect('user/' . $item->id_user . '/my-item')->with('status', 'Success Delete Item');
+    }
+
+    public function checkout(Request $request, Item $item)
+    {
+        // dd($item);
+        // dd($request->purchase_amount);
+        if ($request->purchase_amount < $item->item_stock && $request->purchase_amount != null) {
+            return 'masuk';
+        } else {
+            return 'failed';
+        }
     }
 }
