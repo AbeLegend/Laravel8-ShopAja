@@ -7,7 +7,7 @@
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <title>@yield('title')</title>
 </head>
-<body>
+<body class="bg-gray-100">
   @include('template.navbar')
   @yield('content')
 </body>

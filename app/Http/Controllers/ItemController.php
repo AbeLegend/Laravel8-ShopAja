@@ -80,7 +80,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return view('items.detail', compact('item'));
     }
 
     /**
@@ -91,7 +91,7 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return view('items.edit', compact('item'));
     }
 
     /**
@@ -103,7 +103,53 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+
+        if ($request->item_image) { // Ada gambar
+            $request->validate([
+                'id_user' => 'required',
+                'item_name' => 'required',
+                'item_description' => 'required',
+                'item_stock' => 'required|min:0',
+                'price' => 'required|min:0',
+                'item_image' => 'required|mimes:png,jpg,jpeg|max:5048'
+            ]);
+            // delete old image
+            unlink(public_path('images/' . $item->item_image));
+
+            // create image name
+            $newImageName = time() . '-' . $request->item_name . '.' . $request->item_image->extension();
+
+            // save to public/images folder
+            $request->item_image->move(public_path('images'), $newImageName);
+
+            // edit with image
+            Item::where('id', $item->id)->update([
+                'id_user' => $request->input('id_user'),
+                'item_name' => $request->input('item_name'),
+                'item_description' => $request->input('item_description'),
+                'item_stock' => $request->input('item_stock'),
+                'price' => $request->input('price'),
+                'item_image' => $newImageName
+            ]);
+        } else { // tidak ada gambar
+            $request->validate([
+                'id_user' => 'required',
+                'item_name' => 'required',
+                'item_description' => 'required',
+                'item_stock' => 'required|min:0',
+                'price' => 'required|min:0'
+            ]);
+            // edit without image
+            Item::where('id', $item->id)->update([
+                'id_user' => $request->input('id_user'),
+                'item_name' => $request->input('item_name'),
+                'item_description' => $request->input('item_description'),
+                'item_stock' => $request->input('item_stock'),
+                'price' => $request->input('price')
+            ]);
+        }
+
+        return redirect('items')->with('status', 'Success Edit Item');
     }
 
     /**

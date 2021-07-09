@@ -17,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 // Item Route
 Route::get('/', [ItemController::class, 'showAll'])->middleware(['auth', 'verified']);
 Route::get('/items', [ItemController::class, 'index'])->middleware(['auth']);
-Route::get('/items/create', [ItemController::class, 'create'])->middleware('auth');
 Route::post('/items', [ItemController::class, 'store'])->middleware('auth');
+Route::get('/items/create', [ItemController::class, 'create'])->middleware('auth');
+Route::get('/items/{item}', [ItemController::class, 'show'])->middleware('auth');
+Route::put('/items/{item}', [ItemController::class, 'update'])->middleware('auth');
+Route::get('/items/{item}/edit', [ItemController::class, 'edit'])->middleware('auth');
 // User Authentication
 Route::view('/profile/edit', 'profile.edit')->middleware(['auth', 'verified']);
 Route::view('/profile/password', 'profile.password')->middleware(['auth']);
