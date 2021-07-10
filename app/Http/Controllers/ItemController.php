@@ -170,8 +170,17 @@ class ItemController extends Controller
     {
         // dd($item);
         // dd($request->purchase_amount);
-        if ($request->purchase_amount < $item->item_stock && $request->purchase_amount != null) {
-            return 'masuk';
+        //  && $request->uang > $item->price
+        // Jumlah pembelian lebih kecil atau sama dengan stock yang dijual & jumlah pembelian tidak null
+        if ($request->purchase_amount <= $item->item_stock && $request->purchase_amount != null) {
+            // total harga
+            $total = $request->purchase_amount * $item->price;
+            // uang user lebih besar atau sama dengan jumlah total harga
+            if ($request->uang >= $total) {
+                // return $total;
+            } else {
+                return 'uang ga cukup';
+            }
         } else {
             return 'failed';
         }

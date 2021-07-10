@@ -18,8 +18,9 @@
     <form action="{{ url('items/'. $item->id .'/checkout') }}" method="POST" class="flex flex-col">
       @csrf
       <div class="flex items-center space-x-3">
+        <input type="hidden" name="uang" value="{{ auth()->user()->uang }}">
         <label class="block font-semibold">Purchase amount:</label>
-        <input type="number" name="purchase_amount" class="border h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 rounded-md text-black" required/>
+        <input type="number" name="purchase_amount" class="border h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-green-400 rounded-md text-black" value="0" required/>
       </div>
       <button type="submit" class="my-5 bg-green-600 px-3 py-2 rounded  font-medium hover:bg-green-700 transform hover:-translate-y-1 duration-300 ease-in-out">Checkout</button>
     </form>
