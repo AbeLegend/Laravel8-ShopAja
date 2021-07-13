@@ -17,4 +17,9 @@ class Item extends Model
         'item_stock',
         'price'
     ];
+
+    public function addCart()
+    {
+        return $this->hasOne(Cart::class, 'id_item');
+    }
 }

@@ -6,12 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "laraveldaily/laravel-invoices": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

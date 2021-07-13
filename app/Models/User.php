@@ -47,4 +47,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Item::class, 'id_user');
     }
+
+    public function beforeCheckoutOne()
+    {
+        return $this->hasOne(Item::class, 'id_user');
+    }
 }

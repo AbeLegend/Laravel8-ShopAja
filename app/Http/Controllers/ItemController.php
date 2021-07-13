@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
-
-    public function showAll()
-    {
-        $items = Item::all();
-        return view('home', compact('items'));
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +17,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::all();
+
+        return view('home', compact('items'));
     }
 
     /**
@@ -68,7 +66,7 @@ class ItemController extends Controller
         ]);
 
         // redirect
-        return redirect('user/' . $request->input('id_user') . '/my-item')->with('status', 'Success Create New Item for Sell');
+        return redirect('user/my-item')->with('status', 'Success Create New Item for Sell');
     }
 
     /**
@@ -79,7 +77,12 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('items.detail', compact('item'));
+        $itemSell = Item::find($item->id);
+        $inCart = DB::table('carts')
+            ->where('id_user', auth()->user()->id)
+            ->where('id_item', $item->id)
+            ->first();
+        return view('items.detail', compact('itemSell', 'inCart'));
     }
 
     /**
@@ -147,7 +150,7 @@ class ItemController extends Controller
                 'price' => $request->input('price')
             ]);
         }
-        return redirect('user/' . $item->id_user . '/my-item')->with('status', 'Success Edit Item');
+        return redirect('user/my-item')->with('status', 'Success Edit Item');
     }
 
     /**
@@ -163,26 +166,14 @@ class ItemController extends Controller
         // delete data
         Item::destroy($item->id);
         // redirect
-        return redirect('user/' . $item->id_user . '/my-item')->with('status', 'Success Delete Item');
+        return redirect('user/my-item')->with('status', 'Success Delete Item');
     }
 
-    public function checkout(Request $request, Item $item)
+    // my item
+    public function myItem()
     {
-        // dd($item);
-        // dd($request->purchase_amount);
-        //  && $request->uang > $item->price
-        // Jumlah pembelian lebih kecil atau sama dengan stock yang dijual & jumlah pembelian tidak null
-        if ($request->purchase_amount <= $item->item_stock && $request->purchase_amount != null) {
-            // total harga
-            $total = $request->purchase_amount * $item->price;
-            // uang user lebih besar atau sama dengan jumlah total harga
-            if ($request->uang >= $total) {
-                // return $total;
-            } else {
-                return 'uang ga cukup';
-            }
-        } else {
-            return 'failed';
-        }
+        $items = User::find(auth()->user()->id)->myItem;
+
+        return view('items.index', compact('items'));
     }
 }

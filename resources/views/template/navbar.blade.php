@@ -15,8 +15,9 @@
         @if (Route::has('login'))
           @auth
           <a href="{{ url('/') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Home</a>
-          <a href="{{ url('user/'.auth()->user()->id.'/my-item') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">My Item</a>
-          <a href="#" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Transaction</a>
+          <a href="{{ url('user/my-item') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">My Item</a>
+          <a href="{{ url('carts') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Cart</a>
+          <a href="{{ url('transactions') }}" class="block px-4 py-3 lg:py-5 text-gray-300 hover:text-white">Transaction</a>
           @endauth
         @else          
 

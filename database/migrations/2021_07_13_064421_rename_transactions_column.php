@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class RenameTransactionsColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_item');
-            // $table->
-            $table->timestamps();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->renameColumn("`no-trx`", "no_trx");
         });
     }
 
@@ -29,6 +25,8 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->renameColumn("no_trx", "`no-trx`");
+        });
     }
 }
