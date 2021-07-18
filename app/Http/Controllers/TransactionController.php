@@ -16,6 +16,7 @@ class TransactionController extends Controller
 {
     public function checkout()
     {
+        // Setiap checkout janga lupa hapus dulu data checkout yang sebelumnya jika terjadi checkout ulang afar tidak duplicate
         $myCart = DB::table('carts')
             ->Join('items', 'items.id', '=', 'carts.id_item')
             ->where('carts.id_user', auth()->user()->id)
@@ -86,29 +87,48 @@ class TransactionController extends Controller
 
     public function show()
     {
-        // cek dulu apakah ada trx atau ngga, tampilkan kosong jika ga ada
-
-        $cekTrx = DB::table('transactions')
+        // Ambil semua data dari tabel transaksi, filter by id user
+        $getAllTrx = DB::table('transactions')
             ->where('id_user', auth()->user()->id)
-            ->where('status', 'pending')
             ->get();
-        if (count($cekTrx) > 0) {
-            $trx = DB::table('items')
-                ->Join('transactions', 'transactions.id_item', '=', 'items.id')
-                ->where('transactions.id_user', auth()->user()->id)
-                ->where('transactions.status', 'pending')
-                ->select('items.item_name', 'items.item_image', 'items.price', 'transactions.count', 'transactions.status')
-                ->get();
-            if (count($trx) > 0) {
-                $newPrice = 0;
-                foreach ($trx as $t) {
-                    $newPrice = $newPrice + ($t->price * $t->count);
-                }
-            }
-            return view('transactions.show', compact('trx', 'newPrice', 'cekTrx'));
-        } else {
-            return view('transactions.show', compact('cekTrx'));
-        }
+        dd($getAllTrx);
+        // Pisahkan yang status success dan pending
+
+        // Pastikan yang diambil no transaksi nya sama (1 card isinya semua trx yang no_trx sama)
+
+        // Cek juga kalau ada transaksi atau ngga pakai count()->kalau ga ada sama sekali return kosong ke view
+
+        // Tampilkan kedua data transaksi yang memiliki status pending dan sukses dalam 2 variable nanti kirim ke view juga 2 variale untuk statusnya
+
+        // di view jadikan 2 card, 1 untuk pending (harus dibayar dulu), 1 lagi semua transaksi yang pernah ada yang sudah sukses disimpan
+        // kedalam card sesuai no trx (ingat selalu cek kondisi pada view jika tidak ada transaksi agar tidak ada bug)
+
+        // jangan lupa tampilkan button print untuk trx yang sukses. untuk pembeli munculkan pay under date untuk penjual tidak usah
+
+
+
+        // ini yang pending yang harus dibayar
+        // $cekTrx = DB::table('transactions')
+        //     ->where('id_user', auth()->user()->id)
+        //     ->where('status', 'pending')
+        //     ->get();
+        // if (count($cekTrx) > 0) {
+        //     $trx = DB::table('items')
+        //         ->Join('transactions', 'transactions.id_item', '=', 'items.id')
+        //         ->where('transactions.id_user', auth()->user()->id)
+        //         ->where('transactions.status', 'pending')
+        //         ->select('items.item_name', 'items.item_image', 'items.price', 'transactions.count', 'transactions.status')
+        //         ->get();
+        //     if (count($trx) > 0) {
+        //         $newPrice = 0;
+        //         foreach ($trx as $t) {
+        //             $newPrice = $newPrice + ($t->price * $t->count);
+        //         }
+        //     }
+        //     return view('transactions.show', compact('trx', 'newPrice', 'cekTrx'));
+        // } else {
+        //     return view('transactions.show', compact('cekTrx'));
+        // }
     }
 
     public function pay(Request $request)
@@ -191,6 +211,11 @@ class TransactionController extends Controller
         ]);
         // redirect ke halaman awal dengan status pembelian berhasil
         return redirect('/')->with('status', 'Complete');
+    }
+
+    public function myTrx()
+    {
+        //
     }
 
     public function checkoutOne(Request $request)

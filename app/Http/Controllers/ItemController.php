@@ -17,7 +17,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $items =
+            DB::table('items')
+            ->Join('users', 'users.id', '=', 'items.id_user')
+            ->select('items.item_name', 'items.item_image', 'items.item_description', 'items.price', 'items.id_user', 'items.id', 'users.username')
+            ->get();
 
         return view('home', compact('items'));
     }
@@ -77,10 +81,16 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        $itemSell = Item::find($item->id);
+        // $itemSell = Item::find($item->id);
+        $itemSell = DB::table('items')
+            ->Join('users', 'users.id', '=', 'items.id_user')
+            ->where('items.id', $item->id)
+            ->select('items.item_name', 'items.item_image', 'items.item_description', 'items.price', 'items.item_stock', 'items.id', 'users.username')
+            ->first();
         $inCart = DB::table('carts')
             ->where('id_user', auth()->user()->id)
             ->where('id_item', $item->id)
+            ->where('status', 'no')
             ->first();
         return view('items.detail', compact('itemSell', 'inCart'));
     }

@@ -32,6 +32,7 @@ Route::view('/profile/password', 'profile.password')->middleware(['auth']);
 // Cart Route
 Route::get('/carts', [CartController::class, 'show'])->middleware('auth');
 Route::post('/carts', [CartController::class, 'store'])->middleware('auth');
+Route::post('/carts/buyOne', [CartController::class, 'buyOne'])->middleware('auth');
 Route::delete('/carts/{cart}', [CartController::class, 'destroy'])->middleware('auth');
 Route::post('/carts/purchase-amount', [CartController::class, 'purchaseAmount'])->middleware('auth');
 

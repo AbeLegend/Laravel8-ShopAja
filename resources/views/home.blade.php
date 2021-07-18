@@ -17,6 +17,7 @@
                 <h2 class="text-red-500 font-bold">{{ $item->price }}</h2>
                 <a href="{{ url('/items/' . $item->id) }}" class="bg-green-600 px-3 py-2 rounded text-white font-medium hover:bg-green-700 transform hover:-translate-y-1 duration-300 ease-in-out">Detail</a>
               </div>
+              <p class="text-sm truncate">Seller: {{ $item->username }}</p>
             </div>
           @endif
         @endforeach

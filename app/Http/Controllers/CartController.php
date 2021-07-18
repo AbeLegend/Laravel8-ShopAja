@@ -25,11 +25,28 @@ class CartController extends Controller
 
         return redirect('items/' . $request->id_item)->with('status', 'Success Add to Cart');
     }
+    public function buyOne(Request $request)
+    {
+        $request->validate([
+            'id_user' => 'required',
+            'id_item' => 'required',
+            'count' => 'required|numeric|min:1',
+        ]);
+
+        Cart::create([
+            'id_user' => $request->input('id_user'),
+            'id_item' => $request->input('id_item'),
+            'count' => $request->input('count'),
+            'status' => 'no'
+        ]);
+
+        return redirect('checkout');
+    }
     public function destroy(Cart $cart)
     {
-        // // delete data
+        // delete data
         Cart::destroy($cart->id);
-        // // redirect
+        // redirect
         return redirect('items/' . $cart->id_item)->with('status', 'Success Delete From Cart');
     }
 
