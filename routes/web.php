@@ -39,5 +39,6 @@ Route::post('/carts/purchase-amount', [CartController::class, 'purchaseAmount'])
 // Transaction
 Route::get('/checkout', [TransactionController::class, 'checkout'])->middleware('auth');
 Route::get('/transactions', [TransactionController::class, 'show'])->middleware('auth');
+Route::get('/transactions/history', [TransactionController::class, 'history'])->middleware('auth');
 Route::post('/transactions/pay', [TransactionController::class, 'pay'])->middleware('auth');
 Route::post('/checkout/now', [TransactionController::class, 'makeTrx'])->middleware('auth');

@@ -4,6 +4,8 @@
 
 @section('content')
 
+<a href="{{ url('transactions/history') }}" class="p-2 bg-purple-500 ">List Trx</a>
+
   @if (count($cekTrx)>0)
     @forelse ($trx as $t)
       <h1>{{ $t->item_name }}</h1>
