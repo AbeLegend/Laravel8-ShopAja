@@ -26,7 +26,7 @@
             <p class="text-sm">{{ $cart->item_description }}</p>
           </div>
         </td>
-        <td class="border-2 p-1 text-center">Rp {{ $cart->price }},-</td>
+        <td class="border-2 p-1 text-center">Rp {{ number_format($cart->price,0,'.','.') }},-</td>
         <td class="border-2 text-center">
           <form action="{{ url('carts/purchase-amount') }}" method="POST">
             @csrf
@@ -39,7 +39,7 @@
             <button type="submit">Cek</button>
           </form>
         </td>
-        <td class="border-2 p-1 text-center">Rp {{ $cart->price * $cart->count }},-</td>
+        <td class="border-2 p-1 text-center">Rp {{ number_format($cart->price * $cart->count,0,'.','.') }},-</td>
       </tr>
       @empty
       <h1>checkout kosong</h1>
@@ -56,7 +56,7 @@
             $pricee = $pricee+($cart->price * $cart->count);
           ?>
         @endforeach
-          <td class="border-2 p-1 text-center">Rp {{ $pricee }},-</td>
+          <td class="border-2 p-1 text-center">Rp {{ number_format($pricee,0,'.','.') }},-</td>
       </tr>
       @endif
     </tbody>

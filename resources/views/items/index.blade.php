@@ -17,7 +17,7 @@
             <p class="text-sm">{{ $item->item_description }}</p>
             <p class="text-sm">Stock: {{ $item->item_stock }}</p>
             <div class="flex justify-between items-center">
-              <h2 class="text-red-500 font-bold">Rp {{ $item->price }},-</h2>
+              <h2 class="text-red-500 font-bold">Rp {{ number_format($item->price,0,'.','.') }},-</h2>
               <div class="flex space-x-2">
                 <form action="{{ url('items/'.$item->id) }}" method="POST">
                   @csrf

@@ -154,10 +154,11 @@ class TransactionController extends Controller
             ->get();
         if (count($cekTrx) > 0) {
             $trx = DB::table('items')
-                ->Join('transactions', 'transactions.id_item', '=', 'items.id')
+                ->join('transactions', 'transactions.id_item', '=', 'items.id')
+                ->join('users', 'users.id', '=', 'items.id_user')
                 ->where('transactions.id_user', auth()->user()->id)
                 ->where('transactions.status', 'pending')
-                ->select('items.item_name', 'items.item_image', 'items.price', 'transactions.count', 'transactions.status')
+                ->select('items.item_name', 'items.item_description', 'items.item_image', 'items.price', 'transactions.count', 'transactions.status', 'users.username')
                 ->get();
             if (count($trx) > 0) {
                 $newPrice = 0;

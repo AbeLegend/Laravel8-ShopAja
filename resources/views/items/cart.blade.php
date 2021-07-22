@@ -20,7 +20,7 @@
       <h1 class="text-xl font-medium border-b-2 border-indigo-600">{{ $cart->item_name }}</h1>
       <p class="truncate">{{ $cart->item_description }}</p>
     </div>
-    <h1 class="font-bold">Rp {{ $cart->price }},-</h1>
+    <h1 class="font-bold">Rp {{ number_format($cart->price,0,'.','.') }},-</h1>
     <form action="{{ url('carts/'.$cart->id_cart) }}" method="POST">
       @csrf
       @method('delete')

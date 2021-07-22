@@ -17,7 +17,7 @@
     <p class="text-justify px-5 py-1 ">Detail:</p>
     <p class="text-justify px-5 py-1 border-b-2 border-indigo-400">{{ $itemSell->item_description }}</p>
     <p class="font-medium">Stock: {{ $itemSell->item_stock }}</p>
-    <p class="font-bold my-2">Price: Rp {{ $itemSell->price }} /pcs</p>
+    <p class="font-bold my-2">Price: Rp {{ number_format($itemSell->price,0,'.','.') }},- /pcs</p>
     @if ($inCart != null)
 
       @else
