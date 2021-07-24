@@ -23,7 +23,7 @@
           <h1>Nama Barang: {{ $t->item_name }}</h1>
           <h1>Deskripsi: {{ $t->item_description }}</h1>
           <h1>Jumlah: {{ $t->count }}</h1>
-          <h1>Harga: Rp {{ number_format($t->price,0,'.','.') }},-</h1>
+          <h1>Harga: Rp {{ number_format($t->price*$t->count,0,'.','.') }},-</h1>
           <h1>Seller: {{ $t->username }}</h1>
         </div>
       </div>

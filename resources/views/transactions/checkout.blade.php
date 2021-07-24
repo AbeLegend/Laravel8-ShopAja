@@ -61,7 +61,7 @@
       @endif
     </tbody>
   </table>
-
+  {{-- @dd($myCart) --}}
     <form action="{{ url('checkout/now') }}" method="POST" class="flex justify-center mt-5">
       @csrf
       <input type="hidden" value="{{ $pricee }}" name="total_price">
@@ -70,6 +70,7 @@
           <input type="hidden" value="{{ $cart->id_cart }}" name="id_cart[]">
           <input type="hidden" value="{{ $cart->price }}" name="price[]">
           <input type="hidden" value="{{ $cart->count }}" name="count[]">
+          <input type="hidden" value="{{ $cart->id_user }}" name="id_user[]">
           <input type="hidden" value="pending" name="status[]">
         @empty
         @endforelse

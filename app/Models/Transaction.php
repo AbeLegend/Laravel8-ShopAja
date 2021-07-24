@@ -16,6 +16,7 @@ class Transaction extends Model
         'price',
         'count',
         'status',
-        'no_trx'
+        'no_trx',
+        'id_penjual'
     ];
 }

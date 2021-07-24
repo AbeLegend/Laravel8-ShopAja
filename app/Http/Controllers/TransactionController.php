@@ -23,6 +23,7 @@ class TransactionController extends Controller
             ->where('carts.id_user', auth()->user()->id)
             ->where('status', 'no')
             ->select(
+                'items.id_user',
                 'items.item_name',
                 'items.item_image',
                 'items.item_stock',
@@ -70,6 +71,7 @@ class TransactionController extends Controller
                         'count' => $data['count'][$key],
                         'status' => $data['status'][$key],
                         'no_trx' => max($arrValue) + 1,
+                        'id_penjual' => $data['id_user'][$key]
                     );
                     Transaction::create($data2);
                 }
@@ -89,6 +91,7 @@ class TransactionController extends Controller
                         'count' => $data['count'][$key],
                         'status' => $data['status'][$key],
                         'no_trx' => 1,
+                        'id_penjual' => $data['id_user'][$key]
                     );
                     Transaction::create($data2);
                 }
@@ -311,8 +314,8 @@ class TransactionController extends Controller
             'address'       => auth()->user()->alamat
         ]);
         $item = DB::table('transactions')
-            ->join('users', 'users.id', '=', 'transactions.id_user')
             ->join('items', 'items.id', '=', 'transactions.id_item')
+            ->join('users', 'users.id', '=', 'transactions.id_user')
             ->select(
                 'items.price',
                 'transactions.count',
@@ -320,6 +323,7 @@ class TransactionController extends Controller
                 'users.username',
             )
             ->where('transactions.no_trx', '=', $request->no_trx)
+            ->where('transactions.id_penjual', '=', auth()->user()->id)
             ->get()
             ->toArray();
         $items = [];
