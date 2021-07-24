@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->float('price');
             $table->integer('count');
             $table->enum('status', ['pending', 'success']);
-            $table->integer('no-trx');
+            $table->integer('no_trx');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

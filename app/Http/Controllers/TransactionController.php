@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Item;
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use LaravelDaily\Invoices\Invoice;
@@ -121,7 +122,8 @@ class TransactionController extends Controller
             )
             ->where('transactions.id_user', auth()->user()->id)
             ->where('transactions.status', 'success')
-            ->get();
+            ->get()
+            ->sortBy('no_trx');
         // Ambil semua data dari tabel transaksi, filter by id user ambil yang statusnya success (untuk seller)
         $seller = DB::table('transactions')
             ->join('items', 'items.id', '=', 'transactions.id_item')
@@ -142,7 +144,8 @@ class TransactionController extends Controller
             )
             ->where('users.id', auth()->user()->id)
             ->where('transactions.status', 'success')
-            ->get();
+            ->get()
+            ->sortBy('no_trx');
         return view('transactions.list', compact('trxs', 'seller'));
     }
     public function show()
@@ -254,43 +257,91 @@ class TransactionController extends Controller
         return redirect('/')->with('status', 'Complete');
     }
 
-    public function checkoutOne(Request $request)
+    public function printBuyer(Request $request)
     {
-        // dd($request);
-        // $client = new Party([
-        //     'name'          => 'Mohamad Fikri Abu Bakar',
-        //     'address'       => 'Bandung'
-        // ]);
+        $customer = new Party([
+            'name'          => auth()->user()->username,
+            'address'       => auth()->user()->alamat
+        ]);
 
-        // $customer = new Party([
-        //     'name'          => 'Abe',
-        //     'address'       => 'Jakarta'
-        // ]);
+        $item = DB::table('transactions')
+            ->join('items', 'items.id', '=', 'transactions.id_item')
+            ->join('users', 'users.id', '=', 'items.id_user')
+            ->select(
+                'items.price',
+                'transactions.count',
+                'items.item_name',
+                'users.username',
+            )
+            ->where('transactions.no_trx', '=', $request->no_trx)
+            ->get()
+            ->toArray();
 
-        // $items = [(new InvoiceItem())->title('Service 1')->pricePerUnit(500000)->quantity(2)];
+        $items = [];
 
-        // $notes = ['Thanks'];
-        // $notes = implode("<br>", $notes);
+        foreach ($item as $value) {
+            array_push($items, (new InvoiceItem())->seller($value->username)->title($value->item_name)->pricePerUnit($value->price)->quantity($value->count));
+        }
 
-        // $invoice = Invoice::make('ShopAja')
-        //     ->sequence(667) // invoice harus uniq
-        //     ->serialNumberFormat('{SEQUENCE}/{SERIES}')
-        //     ->seller($client)
-        //     ->buyer($customer)
-        //     ->date(now()->subWeeks(3))
-        //     ->dateFormat('m/d/Y')
-        //     ->currencySymbol('Rp ')
-        //     ->currencyCode('IND')
-        //     ->currencyFormat('{SYMBOL}{VALUE}')
-        //     ->currencyThousandsSeparator('.')
-        //     ->currencyDecimalPoint(',')
-        //     ->filename($client->name . '-' . $customer->name . '-' . time())
-        //     ->addItems($items)
-        //     ->notes($notes)
-        //     // You can additionally save generated invoice to configured disk
-        //     ->save('public');
+        $notes = ['Thank you for shopping.'];
+        $notes = implode("<br>", $notes);
+        $invoice = Invoice::make('ShopAja')
+            ->sequence($request->no_trx)
+            ->serialNumberFormat('{SEQUENCE}/{SERIES}')
+            ->buyer($customer)
+            ->isBuy(true)
+            ->date(Carbon::parse($request->created_at))
+            ->dateFormat('m-d-Y')
+            ->currencySymbol('Rp ')
+            ->currencyCode('IND')
+            ->currencyFormat('{SYMBOL}{VALUE}')
+            ->currencyThousandsSeparator('.')
+            ->currencyDecimalPoint(',')
+            ->filename($customer->name . '-' . time())
+            ->addItems($items)
+            ->notes($notes)
+            ->save('public');
 
-        // // And return invoice itself to browser or have a different view
-        // return $invoice->stream();
+        return $invoice->stream();
+    }
+    public function printSeller(Request $request)
+    {
+        $customer = new Party([
+            'name'          => auth()->user()->username,
+            'address'       => auth()->user()->alamat
+        ]);
+        $item = DB::table('transactions')
+            ->join('users', 'users.id', '=', 'transactions.id_user')
+            ->join('items', 'items.id', '=', 'transactions.id_item')
+            ->select(
+                'items.price',
+                'transactions.count',
+                'items.item_name',
+                'users.username',
+            )
+            ->where('transactions.no_trx', '=', $request->no_trx)
+            ->get()
+            ->toArray();
+        $items = [];
+        foreach ($item as $value) {
+            array_push($items, (new InvoiceItem())->buyer($value->username)->title($value->item_name)->pricePerUnit($value->price)->quantity($value->count));
+        }
+
+        $invoice = Invoice::make('ShopAja')
+            ->sequence($request->no_trx)
+            ->serialNumberFormat('{SEQUENCE}/{SERIES}')
+            ->seller($customer)
+            ->isBuy(false)
+            ->date(Carbon::parse($request->created_at))
+            ->dateFormat('m-d-Y')
+            ->currencySymbol('Rp ')
+            ->currencyCode('IND')
+            ->currencyFormat('{SYMBOL}{VALUE}')
+            ->currencyThousandsSeparator('.')
+            ->currencyDecimalPoint(',')
+            ->filename($customer->name . '-' . time())
+            ->addItems($items)
+            ->save('public');
+        return $invoice->stream();
     }
 }

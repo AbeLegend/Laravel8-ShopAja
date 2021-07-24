@@ -42,3 +42,5 @@ Route::get('/transactions', [TransactionController::class, 'show'])->middleware(
 Route::get('/transactions/history', [TransactionController::class, 'history'])->middleware('auth');
 Route::post('/transactions/pay', [TransactionController::class, 'pay'])->middleware('auth');
 Route::post('/checkout/now', [TransactionController::class, 'makeTrx'])->middleware('auth');
+Route::post('/transactions/print-buyer', [TransactionController::class, 'printBuyer'])->middleware('auth');
+Route::post('/transactions/print-seller', [TransactionController::class, 'printSeller'])->middleware('auth');

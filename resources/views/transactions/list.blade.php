@@ -20,7 +20,12 @@
       </div>
       @if ($key != 0 && $trx->no_trx == $trxs[$key-1]->no_trx)
       @else
-      <button class="ml-4 bg-indigo-400 px-3 py-2 rounded shadow text-white font-semibold">Print</button>
+      <form action="{{ url('transactions/print-buyer') }}" method="POST">
+        <input type="hidden" name="no_trx" value="{{ $trx->no_trx }}">
+        <input type="hidden" name="created_at" value="{{ $trx->created_at }}">
+        @csrf
+        <button type="submit" class="ml-4 bg-indigo-400 px-3 py-2 rounded shadow text-white font-semibold">Print PDF</button>
+      </form>
       @endif
     </div>
     @empty
@@ -41,7 +46,13 @@
       </div>
       @if ($key != 0 && $me->no_trx == $seller[$key-1]->no_trx)
       @else
-      <button class="ml-4 bg-indigo-400 px-3 py-2 rounded shadow text-white font-semibold">Print</button>
+      <form action="{{ url('transactions/print-seller') }}" method="POST">
+        <input type="hidden" name="no_trx" value="{{ $me->no_trx }}">
+        <input type="hidden" name="id_user" value="{{ $me->buyer }}">
+        <input type="hidden" name="created_at" value="{{ $me->created_at }}">
+        @csrf
+        <button type="submit" class="ml-4 bg-indigo-400 px-3 py-2 rounded shadow text-white font-semibold">Print PDF</button>
+      </form>
       @endif
     </div>
     @empty
