@@ -300,7 +300,7 @@ class TransactionController extends Controller
             ->currencyFormat('{SYMBOL}{VALUE}')
             ->currencyThousandsSeparator('.')
             ->currencyDecimalPoint(',')
-            ->filename($customer->name . '-' . time())
+            ->filename($customer->name . '-' . 'buy-' . time())
             ->addItems($items)
             ->notes($notes)
             ->save('public');
@@ -343,7 +343,7 @@ class TransactionController extends Controller
             ->currencyFormat('{SYMBOL}{VALUE}')
             ->currencyThousandsSeparator('.')
             ->currencyDecimalPoint(',')
-            ->filename($customer->name . '-' . time())
+            ->filename($customer->name . '-' . 'sell-' . time())
             ->addItems($items)
             ->save('public');
         return $invoice->stream();
